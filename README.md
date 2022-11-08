@@ -1,4 +1,4 @@
-# Edge Financial Transactions to S3
+# Edge Financial Transactions Simulator
 
 This is a simple simulation of customer transactions from edge devices (like credit card readers or POS systems) for Mezmo Pipeline Workshop.
 
