@@ -52,7 +52,7 @@ class Device:
                 , 'location': self.device_location
                 , 'status': self.device_status
             }
-            , 'buffer': self.faker.sentence(nb_words=6, variable_nb_words=True, ext_word_list=None)
+            , 'buffer': self.faker.uuid4()
       }
 
 
