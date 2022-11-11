@@ -4,6 +4,8 @@ import json
 import random
 import datetime
 import requests
+from pympler import asizeof
+
 from faker import Faker
 
 class Device:
@@ -43,7 +45,7 @@ class Device:
             , self.genAccessLog
         ])()
 
-        self.running_volume += 0.0 #sizeof(new_transaction)
+        self.running_volume += asizeof.asizeof(new_transaction)*0.001 # in KB
         self.postToMezmo(new_transaction)
     
     def genDeviceLogStatic( self ):
@@ -124,7 +126,6 @@ class Device:
         '''Use requests to forward to Mezmo'''
         if self.debug: print('Posting transaction to Mezmo')
         if self.debug or self.output_packet: print(json.dumps(transaction,indent=3))
-        if self.output_volume: print('{:.3f} GB'.format(self.running_volume))
         # Try a few times and then move on if there are issues
         for i in range(self.retries):
           try:
