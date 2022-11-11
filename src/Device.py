@@ -8,7 +8,7 @@ from faker import Faker
 
 class Device:
     '''Simuluate a single device generating financial transactions.  No real internal logic, just random.'''
-    def __init__(self, device_id, device_name, device_vrs, device_location, device_status, mezmo_key, mezmo_url, output_packet, debug):
+    def __init__(self, device_id, device_name, device_vrs, device_location, device_status, mezmo_key, mezmo_url, output_packet, debug, output_volume):
         self.device_id = device_id
         self.device_name = device_name
         self.device_vrs = device_vrs
@@ -19,6 +19,8 @@ class Device:
         self.retries = 5
         self.output_packet = output_packet
         self.debug = debug
+        self.output_volume = output_volume
+        self.running_volume = 0.0
 
         # Faker
         self.faker = Faker()
@@ -40,6 +42,8 @@ class Device:
             , self.genAccessLog
             , self.genAccessLog
         ])()
+
+        self.running_volume += 0.0 #sizeof(new_transaction)
         self.postToMezmo(new_transaction)
     
     def genDeviceLogStatic( self ):
@@ -120,6 +124,7 @@ class Device:
         '''Use requests to forward to Mezmo'''
         if self.debug: print('Posting transaction to Mezmo')
         if self.debug or self.output_packet: print(json.dumps(transaction,indent=3))
+        if self.output_volume: print('{:.3f} GB'.format(self.running_volume))
         # Try a few times and then move on if there are issues
         for i in range(self.retries):
           try:

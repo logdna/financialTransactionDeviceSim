@@ -20,6 +20,7 @@ if __name__ == "__main__":
     parser.add_argument('-n', '--number_devices', help='Number of devices to simulate', required=True, type=int)
     parser.add_argument('--url', help='Mezmo URL', default='https://pipeline.mezmo.com')
     parser.add_argument('-d', '--debug', help='Debug local logging flag', default=False, action='store_true')
+    parser.add_argument('--output_volume', help='Output running volume', defualt=False, action='store_true')
     args = parser.parse_args()
     
     # Seed random
@@ -41,6 +42,7 @@ if __name__ == "__main__":
                 , mezmo_url=args.url
                 , output_packet=True
                 , debug=args.debug
+                , output_volume=args.output_volume
                 )
             )
 
