@@ -4,11 +4,13 @@ import json
 import random
 import datetime
 import requests
+from pympler import asizeof
+
 from faker import Faker
 
 class Device:
     '''Simuluate a single device generating financial transactions.  No real internal logic, just random.'''
-    def __init__(self, device_id, device_name, device_vrs, device_location, device_status, mezmo_key, mezmo_url, output_packet, debug):
+    def __init__(self, device_id, device_name, device_vrs, device_location, device_status, mezmo_key, mezmo_url, output_packet, debug, output_volume):
         self.device_id = device_id
         self.device_name = device_name
         self.device_vrs = device_vrs
@@ -19,6 +21,8 @@ class Device:
         self.retries = 5
         self.output_packet = output_packet
         self.debug = debug
+        self.output_volume = output_volume
+        self.running_volume = 0.0
 
         # Faker
         self.faker = Faker()
@@ -40,6 +44,8 @@ class Device:
             , self.genAccessLog
             , self.genAccessLog
         ])()
+
+        self.running_volume += asizeof.asizeof(new_transaction)*0.001 # in KB
         self.postToMezmo(new_transaction)
     
     def genDeviceLogStatic( self ):

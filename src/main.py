@@ -14,12 +14,15 @@ from faker import Faker
 
 from Device import Device
 
+# python3 src/main.py --key ${KEY} --number_devices ${NUMBER_DEVICES} --output_volume
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate customer purchase transactions from simulated edge devices.')
     parser.add_argument('-k', '--key', help='Pipeline key to use', required=True)
     parser.add_argument('-n', '--number_devices', help='Number of devices to simulate', required=True, type=int)
     parser.add_argument('--url', help='Mezmo URL', default='https://pipeline.mezmo.com')
     parser.add_argument('-d', '--debug', help='Debug local logging flag', default=False, action='store_true')
+    parser.add_argument('--output_volume', help='Output running volume', default=False, action='store_true')
     args = parser.parse_args()
     
     # Seed random
@@ -41,10 +44,15 @@ if __name__ == "__main__":
                 , mezmo_url=args.url
                 , output_packet=True
                 , debug=args.debug
+                , output_volume=args.output_volume
                 )
             )
 
     while True: # Loop forever to simulate edge device
         random.choice(devices).genAndSendTransaction()
+        if args.output_volume: # and random.uniform(0,1.0) < 0.1: # do this roughly every ten
+            total_vol_gb = 0.0
+            for device in devices: total_vol_gb+= device.running_volume*1e-6
+            print('\nrunning total: {:.5f} GB\n'.format(total_vol_gb)) # in GB
         sleeptime = random.uniform(0, 1) # Sleep between 0 and 1 seconds
         time.sleep(sleeptime)
