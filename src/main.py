@@ -14,7 +14,7 @@ from faker import Faker
 
 from Device import Device
 
-# python3 src/main.py --key ${KEY} --number_devices ${NUMBER_DEVICES} --output_volume
+# python3 src/main.py --key ${KEY} --number_devices ${NUMBER_DEVICES} --output_volume 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate customer purchase transactions from simulated edge devices.')
@@ -22,6 +22,7 @@ if __name__ == "__main__":
     parser.add_argument('-n', '--number_devices', help='Number of devices to simulate', required=True, type=int)
     parser.add_argument('--url', help='Mezmo URL', default='https://pipeline.mezmo.com')
     parser.add_argument('-d', '--debug', help='Debug local logging flag', default=False, action='store_true')
+    parser.add_argument('--output_device', help='Output device data', default=True, action='store_true')
     parser.add_argument('--output_volume', help='Output running volume', default=False, action='store_true')
     args = parser.parse_args()
     
@@ -42,7 +43,7 @@ if __name__ == "__main__":
                 , device_status='active'
                 , mezmo_key=args.key
                 , mezmo_url=args.url
-                , output_packet=True
+                , output_packet=False #args.output_device
                 , debug=args.debug
                 , output_volume=args.output_volume
                 )
@@ -50,9 +51,9 @@ if __name__ == "__main__":
 
     while True: # Loop forever to simulate edge device
         random.choice(devices).genAndSendTransaction()
-        if args.output_volume: # and random.uniform(0,1.0) < 0.1: # do this roughly every ten
+        if args.output_volume and random.uniform(0,1.0) < 0.05: # do this roughly every ten
             total_vol_gb = 0.0
             for device in devices: total_vol_gb+= device.running_volume*1e-6
             print('\nrunning total: {:.5f} GB\n'.format(total_vol_gb)) # in GB
-        sleeptime = random.uniform(0, 1) # Sleep between 0 and 1 seconds
+        sleeptime = random.uniform(0, .001) # Sleep between 0 and 1 seconds
         time.sleep(sleeptime)
