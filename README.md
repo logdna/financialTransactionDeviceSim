@@ -21,7 +21,7 @@ export NUMBER_DEVICES=25
 ```
 
 ## Run
-### Via DockerHub
+### DockerHub
 ```cmd
 docker run -e KEY=${KEY} -e NUMBER_DEVICES=${NUMBER_DEVICES} -it mezmo/transaction-device-sim:0.1.0
 ```
