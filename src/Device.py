@@ -4,6 +4,7 @@ import json
 import random
 import datetime
 import requests
+import traceback
 from pympler import asizeof
 
 from faker import Faker
@@ -118,23 +119,25 @@ class Device:
         })
         tmp['transaction']['net_price'] = float('{:.2f}'.format(tmp['transaction']['quantity'] * tmp['transaction']['unit_price']))
         tmp['transaction']['total_price'] = float('{:.2f}'.format(tmp['transaction']['net_price'] * (1.0 + tmp['transaction']['tax'])))
-        if tmp['transaction']['result'] == 'fail': tmp['transaction']['status_reason'] = self.faker.sentence(nb_words=6, variable_nb_words=True, ext_word_list=None)
+        if tmp['transaction']['result'] == 'fail':
+            tmp['transaction']['result_reason'] = random.choice(['conn_err','invalid_card','denied'])
 
         return tmp
 
     def postToMezmo( self, transaction ):
         '''Use requests to forward to Mezmo'''
         if self.debug: print('Posting transaction to Mezmo')
-        if self.debug or self.output_packet: print(json.dumps(transaction,indent=3))
+        if self.debug or self.output_packet: print(json.dumps(transaction))#print(json.dumps(transaction,indent=3))
         # Try a few times and then move on if there are issues
         for i in range(self.retries):
           try:
             # Using a simple approach but there are many integration paths
-            requests.post(
+            rsp = requests.post(
                   url=self.mezmo_url
                 , headers={'authorization': '{}'.format(self.mezmo_key)}
                 , json=transaction
                 )
+            if self.debug: print('Code: {}\nText: {}'.format(rsp.status_code,rsp.text))
             break
           except:
-            if self.debug: print('Trying to send again...')
+            if self.debug: print('{}\n\nTrying to send again...'.format(traceback.format_exc()))

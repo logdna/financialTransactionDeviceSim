@@ -13,14 +13,16 @@ docker build -t transaction-device-sim .
 ## Define environment varialbes prior
 * `KEY`: Pipeline key to use
 * `NUMBER_DEVICES`: Number of devices to simulate
+* `URL`: Pipeline URL
 
 Ex:
 ```cmd
 export KEY="s_YOUR_KEY"
 export NUMBER_DEVICES=25
+export URL="pipeline.mezmo.com"
 ```
 
 ## Run
 ```cmd
-docker run -e KEY=${KEY} -e NUMBER_DEVICES=${NUMBER_DEVICES} -it transaction-device-sim
+docker run -e KEY=${KEY} -e NUMBER_DEVICES=${NUMBER_DEVICES} -e URL=${URL} -it transaction-device-sim
 ```

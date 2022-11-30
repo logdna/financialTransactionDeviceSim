@@ -43,7 +43,7 @@ if __name__ == "__main__":
                 , device_status='active'
                 , mezmo_key=args.key
                 , mezmo_url=args.url
-                , output_packet=False #args.output_device
+                , output_packet=args.output_device
                 , debug=args.debug
                 , output_volume=args.output_volume
                 )
