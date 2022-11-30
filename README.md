@@ -5,7 +5,7 @@ This is a simple simulation of customer transactions from edge devices (like cre
 ## Requirements
 * Docker
 
-## Build the Docker image
+## Build the Docker image (optional)
 ```cmd
 docker build -t transaction-device-sim .
 ```
@@ -23,6 +23,11 @@ export URL="pipeline.mezmo.com"
 ```
 
 ## Run
+### DockerHub
+```cmd
+docker run -e KEY=${KEY} -e NUMBER_DEVICES=${NUMBER_DEVICES} -it mezmo/transaction-device-sim:0.1.0
+```
+### Locally
 ```cmd
 docker run -e KEY=${KEY} -e NUMBER_DEVICES=${NUMBER_DEVICES} -e URL=${URL} -it transaction-device-sim
 ```

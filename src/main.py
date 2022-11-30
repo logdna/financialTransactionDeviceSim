@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     while True: # Loop forever to simulate edge device
         random.choice(devices).genAndSendTransaction()
-        if args.output_volume and random.uniform(0,1.0) < 0.05: # do this roughly every ten
+        if args.output_volume and random.uniform(0,1.0) < 0.1: # do this roughly every ten
             total_vol_gb = 0.0
             for device in devices: total_vol_gb+= device.running_volume*1e-6
             print('\nrunning total: {:.5f} GB\n'.format(total_vol_gb)) # in GB
