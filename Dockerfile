@@ -10,4 +10,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends gcc
 COPY . .
 RUN pip install -r src/requirements.txt
 
-CMD python src/main.py --key ${KEY} --number_devices ${NUMBER_DEVICES}
+CMD python src/main.py --key ${KEY} --number_devices ${NUMBER_DEVICES} --url ${URL}
